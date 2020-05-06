@@ -1,15 +1,19 @@
 # write your code here
-import random
-field = [[None for i in range(3)] for i in range(3)]
-options = ("X", "O")
-field[0][0] = random.choice(options)
-field[1][0] = random.choice(options)
-field[2][0] = random.choice(options)
-field[0][1] = random.choice(options)
-field[1][1] = random.choice(options)
-field[2][1] = random.choice(options)
-field[0][2] = random.choice(options)
-field[1][2] = random.choice(options)
-field[2][2] = random.choice(options)
-for row in field:
-    print(" ".join(row))
+class TicTacToe:
+    def __init__(self):
+        self.field = [["_" for _i in range(3)] for _i in range(3)]
+
+    def print_field(self):
+        print("---------")
+        for row in self.field:
+            print(f"| {' '.join(row)} |")
+        print("---------")
+
+    def read_field_state(self, state):
+        for i in range(len(state)):
+            self.field[i // 3][i % 3] = state[i]
+
+
+game = TicTacToe()
+game.read_field_state(input())
+game.print_field()
