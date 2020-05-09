@@ -49,8 +49,31 @@ class TicTacToe:
         elif self.field[r][c] == "O":
             o_row[pos] += 1
 
+    def process_coords(self):
+        coords = input("Enter the coordinates")
+        coords = coords.split()
+        if len(coords) != 2:
+            print("You should enter exactly 2 digits!")
+            return False
+        if not coords[0].isdigit() or not coords[1].isdigit():
+            print("You should enter numbers!")
+            return False
+        coords = [int(c) for c in coords]
+        if not 1 <= coords[0] <= 3 or not 1 <= coords[1] <= 3:
+            print("Coordinates should be from 1 to 3!")
+            return False
+        if self.field[3 - coords[1]][coords[0] - 1] != "_":
+            print("This cell is occupied! Choose another one!")
+            return False
+        self.field[3 - coords[1]][coords[0] - 1] = "X"
+        return True
+
 
 game = TicTacToe()
-game.read_field_state(input())
+game.read_field_state(input("Enter cells"))
 game.print_field()
-game.status()
+success = game.process_coords()
+while not success:
+    success = game.process_coords()
+game.print_field()
+
