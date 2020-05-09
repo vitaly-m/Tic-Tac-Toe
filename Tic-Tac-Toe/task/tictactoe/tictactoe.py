@@ -34,14 +34,18 @@ class TicTacToe:
         o_row.sort()
         if abs(x_count - o_count) > 1 or (x_row[-1] == 3 and o_row[-1] == 3):
             print("Impossible")
+            return False
         elif x_row[-1] == 3:
             print("X wins")
+            return False
         elif o_row[-1] == 3:
             print("O wins")
+            return False
         elif x_count + o_count < 9:
-            print("Game not finished")
+            return True
         else:
             print("Draw")
+            return False
 
     def add_to_row(self, c, o_row, r, x_row, pos):
         if self.field[r][c] == "X":
@@ -49,7 +53,7 @@ class TicTacToe:
         elif self.field[r][c] == "O":
             o_row[pos] += 1
 
-    def process_coords(self):
+    def process_coords(self, l):
         coords = input("Enter the coordinates")
         coords = coords.split()
         if len(coords) != 2:
@@ -65,15 +69,20 @@ class TicTacToe:
         if self.field[3 - coords[1]][coords[0] - 1] != "_":
             print("This cell is occupied! Choose another one!")
             return False
-        self.field[3 - coords[1]][coords[0] - 1] = "X"
+        self.field[3 - coords[1]][coords[0] - 1] = l
         return True
+
+    def start_game(self):
+        x = True
+        self.print_field()
+        while self.status():
+            success = self.process_coords("X" if x else "O")
+            while not success:
+                success = self.process_coords("X" if x else "O")
+            x = not x
+            self.print_field()
 
 
 game = TicTacToe()
-game.read_field_state(input("Enter cells"))
-game.print_field()
-success = game.process_coords()
-while not success:
-    success = game.process_coords()
-game.print_field()
+game.start_game()
 
